@@ -13,25 +13,22 @@ class Board:
 
     #Initiate the hunters  
     self.hunters = []
-    for i in range(3):
+    for i in range(2):
       self.hunters.append(Hunter())
 
     #Initiate the prey 
     self.prey = []
-    for i in range(6):
+    for i in range(5):
       self.prey.append(Prey())
 
 
   def init_board(self):
-    print('test')
     for hunter in self.hunters:
-      x = hunter.getPosition()[0]
-      y = hunter.getPosition()[1]
+      x,y = hunter.getPosition()
       self.positions[x][y] = 1
 
     for p in self.prey:
-      x = p.getPosition()[0]
-      y = p.getPosition()[1]
+      x,y = p.getPosition()
       self.positions[x][y] = 2
 
 
@@ -44,23 +41,36 @@ class Board:
     # print(self.positions)
 
   def update_board(self):
+    #Determine the new x,y values for the hunters, store them and visually update the board
+    new_Hunter_Pos = []
     for hunter in self.hunters:
       #Change the old locations to empty
-      x = hunter.getPosition()[0]
-      y = hunter.getPosition()[1]
+      x,y = hunter.getPosition()
       self.positions[x][y] = 0
-      #Move and get the new locations
-      hunter.move()
-      x = hunter.getPosition()[0]
-      y = hunter.getPosition()[1]
+      #Move and get the new locations, hunter moves twice as it is faster
+      hunter.setPostion(hunter.move(self.prey))
+      new_Hunter_Pos.append(hunter.move(self.prey))
+      x,y = new_Hunter_Pos[-1]
       self.positions[x][y] = 1
+
+    #Determine the new x,y values for the prey, store them and visually update the board
+    new_Prey_Pos = []
     for p in self.prey:
       #Change the old locations to empty
-      x = p.getPosition()[0]
-      y = p.getPosition()[1]
+      x,y = p.getPosition()
       self.positions[x][y] = 0
       #Move and get the new locations
-      p.move()
-      x = p.getPosition()[0]
-      y = p.getPosition()[1]
+      new_Prey_Pos.append(p.move(self.hunters))
+      x,y = new_Prey_Pos[-1]
       self.positions[x][y] = 2
+
+    #Update the actual x,y values of the hunters and prey
+    for i in range(len(self.hunters)):
+      self.hunters[i].setPostion(new_Hunter_Pos[i])
+    for i in range(len(self.prey)):
+      self.prey[i].setPostion(new_Prey_Pos[i])
+
+  #Check for each prey if it is in the same position as a hunter
+  #If so, remove the prey from the board (its eaten) and reward the hunter
+  def check_alive(self):
+    print('lol')

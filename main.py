@@ -1,4 +1,5 @@
 from board import Board
+import time
 
 
 if __name__ == "__main__":
@@ -6,11 +7,9 @@ if __name__ == "__main__":
   board.init_board()
   board.print_board()
 
-  counter = 0
+ 
   while(True):
-    counter+=1
-    if counter == 10000000:
-      board.update_board()
-      board.print_board()
-      counter = 0
-      print('######################################################')
+    time.sleep(2)
+    board.update_board()
+    board.print_board()
+    print('######################################################')
