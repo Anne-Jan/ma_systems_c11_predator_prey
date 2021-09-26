@@ -1,16 +1,15 @@
 from random import *
 
 class Prey():
-  def __init__(self, pos):
-    # self.position = (randint(0, 24), randint(0, 24))
-    self.position = pos
+  def __init__(self, pos = None):
+    self.position = pos if pos is not None else (randint(0, 24), randint(0, 24))
     self.critical_Distance = 5
 
 
-  def getPosition(self):
+  def get_position(self):
    return self.position
 
-  def setPostion(self, pos):
+  def set_postion(self, pos):
     self.position = pos
 
   def check_move(self, pos):
@@ -32,7 +31,7 @@ class Prey():
     distances = []
     x_Self, y_Self = self.position
     for hunter in hunters:
-      x_Hunter, y_Hunter = hunter.getPosition()
+      x_Hunter, y_Hunter = hunter.get_position()
       distance = (((x_Hunter-x_Self)**2) + ((y_Hunter-y_Self)**2)) **0.5
       distances.append(distance)
 
@@ -47,7 +46,7 @@ class Prey():
 
 
     x_Self, y_Self = self.position
-    x_Hunter, y_Hunter = closest_Hunter.getPosition()
+    x_Hunter, y_Hunter = closest_Hunter.get_position()
     #If the closest hunter is very close, flee
     if closest_Distance < self.critical_Distance:
       ###If hunter is on the same position, then it is already caught and should not move, so return current position
@@ -66,9 +65,7 @@ class Prey():
           x_Self += 1
         elif chance <= 0.666:
           x_Self -= 1
-        ##if its larger than 0.666, do not move away but run in a straight line
-
-
+        # If its larger than 0.666, do not move away but run in a straight line
 
       if y_Self > y_Hunter:
         y_Self = y_Self + 1
@@ -80,7 +77,9 @@ class Prey():
           y_Self += 1
         elif chance <= 0.666:
           y_Self -= 1
-    #no hunter is close, roam
+
+
+    # No hunter is close, roam
     else:
       chance = uniform(0, 1)
       if chance <= 0.3:
@@ -93,35 +92,89 @@ class Prey():
       elif chance <= 0.6:
         y_Self -= 1
       
-    x_Self, y_Self = self.check_if_occupied((x_Self, y_Self), prey)
-    return (self.check_move((x_Self, y_Self)))
+    x_Self, y_Self = self.check_if_occupied(self.check_move((x_Self, y_Self)), prey)
+    return (x_Self, y_Self)
 
   def check_if_occupied(self, pos, prey):
-    new_X, new_Y = pos
+    new_x, new_y = pos
     for other_prey_pos in prey:
       if pos == other_prey_pos:
-        print(other_prey_pos)
-        print(pos)
-        print('TEST')
+        # print(other_prey_pos)
+        # print(pos)
+        print('Possible prey collision')
         
-        while(True):
+        while((new_x, new_y) == other_prey_pos):
           chance = randint(0,3)
+          print(chance)
           if chance == 0:
-            new_X += 1
+            new_x += 1
           elif chance  == 1:
-            new_X -= 1
+            new_x -= 1
           elif chance == 2:
-            new_Y += 1
+            new_y += 1
           else:
-            new_Y -=  1
-          #Check if this new position is legal and, if it is not legal, the pos was modified to the original pos by the check_move function
-          #If the pos turned to be unchanged, try again  
-          (new_X, new_Y) = self.check_move((new_X, new_Y))
+            new_y -=  1
+          # Check if this new position is legal and, if it is not legal, the pos was modified to the original pos by the check_move function
+          # If the pos turned to be unchanged, try again  
+          (new_x, new_y) = self.check_move((new_x, new_y))
           print(other_prey_pos)
-          print((new_X, new_Y))
-          if((new_X, new_Y) != other_prey_pos):
-            break
+          print((new_x, new_y))
+          # if((new_x, new_y) != other_prey_pos):
+          #   break
+        pos = (new_x, new_y)
+    return pos
+
+
+  # def check_if_occupied_base(self, pos, prey):
+  #   for other_prey_pos in prey:
+  #     if pos == other_prey_pos:
+  #       check_if_occupied_rec(pos, prey)
+  #   return pos
+
+  # def check_if_occupied_rec(self, pos, prey):
+  #   if (pos != prey):
+  #     return pos
+  #   else:
+  #     while (pos == prey[index]):
+  #       x,y = pos
+  #       chance = randint(0,3)
+  #       print(chance)
+  #       if chance == 0:
+  #         x += 1
+  #       elif chance  == 1:
+  #         x -= 1
+  #       elif chance == 2:
+  #         y += 1
+  #       else:
+  #         y -=  1
+  #       (x,y) = self.check_move((x,y))
+  #       pos = (x,y)
+  #     index += 1
+  #     return check_if_occupied_rec(pos, prey, index)
+
+    # for other_prey_pos in prey:
+    #   if pos == other_prey_pos:
+    #     # print(other_prey_pos)
+    #     # print(pos)
+    #     print('Possible prey collision')
+        
+    #     while((new_x, new_y) == other_prey_pos):
+    #       chance = randint(0,3)
+    #       print(chance)
+    #       if chance == 0:
+    #         new_x += 1
+    #       elif chance  == 1:
+    #         new_x -= 1
+    #       elif chance == 2:
+    #         new_y += 1
+    #       else:
+    #         new_y -=  1
+    #       # Check if this new position is legal and, if it is not legal, the pos was modified to the original pos by the check_move function
+    #       # If the pos turned to be unchanged, try again  
+    #       (new_x, new_y) = self.check_move((new_x, new_y))
+    #       print(other_prey_pos)
+    #       print((new_x, new_y))
+    #       # if((new_x, new_y) != other_prey_pos):
+    #       #   break
           
-    return (new_X, new_Y)
-
-
+    
