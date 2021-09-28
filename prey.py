@@ -125,6 +125,19 @@ class Prey():
     return pos
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   # def check_if_occupied_base(self, pos, prey):
   #   for other_prey_pos in prey:
   #     if pos == other_prey_pos:

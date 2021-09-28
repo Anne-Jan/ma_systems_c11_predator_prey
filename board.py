@@ -51,19 +51,25 @@ class Board:
         copied_hunters.append(hunter)
     self.hunters = copied_hunters
 
-    # Determine the new x,y values for the hunters, store them and visually update the board
+    # Hungry hunters scan area for prey
+    for hunter in self.hunters:
+      hunter.search(self.prey)
+
+    # Hunters communicate
+    for hunter in self.hunters:
+      hunter.communicate(self.hunters)
+
+    # Hunters move, based on their current goal
     new_hunter_pos = []
     for hunter in self.hunters:
       # Change the old locations to empty
       x,y = hunter.get_position()
       self.positions[x][y] = 0
       #Move and get the new locations, hunter moves twice as it is faster
-      hunter.set_postion(hunter.move(self.prey, new_hunter_pos))
-      hunter.set_postion(hunter.move(self.prey, new_hunter_pos))
+      hunter.set_postion(hunter.move(new_hunter_pos))
+      # hunter.set_postion(hunter.move(new_hunter_pos))
       new_hunter_pos.append(hunter.get_position())
-      # print("hoi")
-      # print(new_hunter_pos[-1])
-      x,y = new_hunter_pos[-1]
+      x,y = hunter.get_position()
       self.positions[x][y] = 1
         
     #After the hunters have moved, check if they caught a prey
@@ -107,3 +113,37 @@ class Board:
     for eaten_p in eaten_prey:
       self.prey.remove(eaten_p)
 
+
+
+
+
+    # # Determine the new x,y values for the hunters, store them and visually update the board
+    # new_hunter_pos = []
+    # for hunter in self.hunters:
+    #   # Scan, search for prey
+    #   hunter.search()
+
+    #   # collect all goals
+    #   goals = []
+    #   for hunter in self.hunters:
+    #     goals.append(hunter.get_goal())
+      
+    #   # Every hunter is now aware of all the prey located by the pack of hunters, and chooses closest target
+    #   hunter.communicate(goals, self.hunters)
+
+
+    #   # move
+
+
+
+    #   # Change the old locations to empty
+    #   x,y = hunter.get_position()
+    #   self.positions[x][y] = 0
+    #   #Move and get the new locations, hunter moves twice as it is faster
+    #   hunter.set_postion(hunter.move(self.prey, new_hunter_pos))
+    #   hunter.set_postion(hunter.move(self.prey, new_hunter_pos))
+    #   new_hunter_pos.append(hunter.get_position())
+    #   # print("hoi")
+    #   # print(new_hunter_pos[-1])
+    #   x,y = new_hunter_pos[-1]
+    #   self.positions[x][y] = 1

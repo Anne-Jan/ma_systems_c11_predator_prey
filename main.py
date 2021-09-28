@@ -1,8 +1,8 @@
 from board import Board
 import time
 
-hunters = 5
-prey = 20
+hunters = 2
+prey = 10
 
 if __name__ == "__main__":
   board = Board(num_hunters = hunters, num_prey = prey)
