@@ -1,10 +1,13 @@
 from random import *
+from params import prey_vars
 
 class Prey():
-  def __init__(self, pos = None):
-    self.position = pos if pos is not None else (randint(0, 24), randint(0, 24))
-    self.critical_Distance = 5
-
+  def __init__(self, board_size):
+    self.position = (randint(0, board_size-1), randint(0, board_size-1))
+    self.critical_distance = prey_vars['prey_vision_range']
+    self.board_size = board_size
+    self.move_handicap = prey_vars['prey_move_handicap']
+    self.reproduce_chance = prey_vars['prey_reproduce_rate']
 
   def get_position(self):
    return self.position
@@ -15,13 +18,13 @@ class Prey():
   def check_move(self, pos):
     x,y = pos
 
-    if x > 24:
-      x = 24
+    if x > self.board_size-1:
+      x = self.board_size-1
     elif x < 0:
       x = 0
 
-    if y > 24:
-      y = 24
+    if y > self.board_size-1:
+      y = self.board_size-1
     elif y < 0:
       y = 0
     
@@ -29,71 +32,95 @@ class Prey():
 
   def distance_to_agents(self, hunters):
     distances = []
-    x_Self, y_Self = self.position
+    x_self, y_self = self.position
     for hunter in hunters:
-      x_Hunter, y_Hunter = hunter.get_position()
-      distance = (((x_Hunter-x_Self)**2) + ((y_Hunter-y_Self)**2)) **0.5
+      x_hunter, y_hunter = hunter.get_position()
+      distance = (((x_hunter-x_self)**2) + ((y_hunter-y_self)**2)) **0.5
       distances.append(distance)
 
     return distances
 
+  def check_reproduce(self, hunters):
+    if hunters:
+      distances = self.distance_to_agents(hunters)
+      closest_distance = min(distances)
+      if closest_distance < self.critical_distance:
+        return False
+
+    chance = uniform(0, 1)
+    if chance <= self.reproduce_chance:
+      # print("new prey spawned")
+      return True
+    else:
+      return False
 
   def move(self, hunters, prey):
-    # self.position = (randint(0, 24), randint(0, 24))
-    distances = self.distance_to_agents(hunters)
-    closest_Distance = min(distances)
-    closest_Hunter = hunters[distances.index(closest_Distance)]
+    # Prey have small chance of not moving at all (to give hunters small advantage)
+    chance = uniform(0, 1)
+    if chance <= self.move_handicap:
+      return self.position
 
-
-    x_Self, y_Self = self.position
-    x_Hunter, y_Hunter = closest_Hunter.get_position()
+    x_self, y_self = self.position
+    no_hunter_close = False
     #If the closest hunter is very close, flee
-    if closest_Distance < self.critical_Distance:
-      ###If hunter is on the same position, then it is already caught and should not move, so return current position
-      if x_Self == x_Hunter and y_Self == y_Hunter:
-        return (x_Self, y_Self)
+    if hunters:
+      # Check position relative to hunters
+      distances = self.distance_to_agents(hunters)
+      closest_distance = min(distances)
+      if closest_distance < self.critical_distance:
+        closest_hunter = hunters[distances.index(closest_distance)]
+        
+        # If hunter is on the same position, then it is already caught and should not move, so return current position
+        x_hunter, y_hunter = closest_hunter.get_position()
+        if x_self == x_hunter and y_self == y_hunter:
+          return (x_self, y_self)
 
-      if x_Self > x_Hunter:
-        x_Self = x_Self + 1
-      elif x_Self < x_Hunter: 
-        x_Self = x_Self - 1
+        if x_self > x_hunter:
+          x_self = x_self + 1
+        elif x_self < x_hunter: 
+          x_self = x_self - 1
 
-      #if the hunter is right behind the prey, move diagonally or in a straight line at random
+        # If the hunter is right behind the prey, move diagonally or in a straight line at random
+        else:
+          chance = uniform(0, 1)
+          if chance <= 0.333:
+            x_self += 1
+          elif chance <= 0.666:
+            x_self -= 1
+          # If its larger than 0.666, do not move away but run in a straight line
+
+        if y_self > y_hunter:
+          y_self = y_self + 1
+        elif y_self < y_hunter: 
+          y_self = y_self - 1
+        else:
+          chance = uniform(0, 1)
+          if chance <= 0.333:
+            y_self += 1
+          elif chance <= 0.666:
+            y_self -= 1
       else:
-        chance = uniform(0, 1)
-        if chance <= 0.333:
-          x_Self += 1
-        elif chance <= 0.666:
-          x_Self -= 1
-        # If its larger than 0.666, do not move away but run in a straight line
-
-      if y_Self > y_Hunter:
-        y_Self = y_Self + 1
-      elif y_Self < y_Hunter: 
-        y_Self = y_Self - 1
-      else:
-        chance = uniform(0, 1)
-        if chance <= 0.333:
-          y_Self += 1
-        elif chance <= 0.666:
-          y_Self -= 1
-
+        no_hunter_close = True
 
     # No hunter is close, roam
     else:
+      no_hunter_close = True
+
+    # If no hunter is close: barely move and maybe reproduce
+    if no_hunter_close:
       chance = uniform(0, 1)
       if chance <= 0.3:
-        x_Self += 1
+        x_self += 1
       elif chance <= 0.6:
-        x_Self -= 1
+        x_self -= 1
       chance = uniform(0, 1)
       if chance <= 0.3:
-        y_Self += 1
+        y_self += 1
       elif chance <= 0.6:
-        y_Self -= 1
+        y_self -= 1
       
-    x_Self, y_Self = self.check_if_occupied(self.check_move((x_Self, y_Self)), prey)
-    return (x_Self, y_Self)
+    x_self, y_self = self.check_if_occupied(self.check_move((x_self, y_self)), prey)
+    return (x_self, y_self)
 
   def check_if_occupied(self, pos, prey):
     new_x, new_y = pos
@@ -101,11 +128,11 @@ class Prey():
       if pos == other_prey_pos:
         # print(other_prey_pos)
         # print(pos)
-        print('Possible prey collision')
+        # print('Possible prey collision')
         
         while((new_x, new_y) == other_prey_pos):
           chance = randint(0,3)
-          print(chance)
+          # print(chance)
           if chance == 0:
             new_x += 1
           elif chance  == 1:
@@ -117,10 +144,7 @@ class Prey():
           # Check if this new position is legal and, if it is not legal, the pos was modified to the original pos by the check_move function
           # If the pos turned to be unchanged, try again  
           (new_x, new_y) = self.check_move((new_x, new_y))
-          print(other_prey_pos)
-          print((new_x, new_y))
-          # if((new_x, new_y) != other_prey_pos):
-          #   break
+          
         pos = (new_x, new_y)
     return pos
 
