@@ -12,7 +12,7 @@ board_vars = {
 # Hunter variables
 hunter_vars = {
 'hunter_vision_range': 20,              # Detect prey within this range
-'hunter_communication_range': 40,       # Communicate with hunters within this range
+'hunter_communication_range': 40,       # Communicate with hunters within this range (0 = no commmunication)
 'hunter_stalking_range': 8,             # Range at which hunters stalk prey if other hunters are coming to help
 'hunter_hunger_threshold': 80,          # While above this threshold, hunters do not hunt and have chance to reproduce
 'hunter_energy_consumption': 3,         # Amount of energy consumed when moving
