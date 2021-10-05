@@ -27,6 +27,7 @@ class Hunter:
     self.hunter_to_help = None
     self.is_stalking = False
     self.ready = False
+    self.cooperation_energy = hunter_vars['hunter_coop_energy']
 
     self.reproduce_chance = hunter_vars['hunter_reproduce_rate']
 
@@ -226,8 +227,12 @@ class Hunter:
     return (x_self, y_self)
 
   def feed(self, hunters):
-    if self.satedness != 100:
-      self.satedness = 100
+    # Recursive function, needs to know if hunter has fed already
+    if self.satedness != 100 and self.satedness != self.cooperation_energy:
+      if self.hunter_to_help == None and len(self.helping_hunters) == 0:
+        self.satedness = 100
+      else:
+        self.satedness = self.cooperation_energy
       # Every hunter that aided in this hunt gets rewarded:
       for hunter in hunters:
         if hunter.get_id() == self.hunter_to_help:
