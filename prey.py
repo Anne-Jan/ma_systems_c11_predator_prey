@@ -8,12 +8,19 @@ class Prey():
     self.board_size = board_size
     self.move_handicap = prey_vars['prey_move_handicap']
     self.reproduce_chance = prey_vars['prey_reproduce_rate']
+    self.age = 0
 
   def get_position(self):
    return self.position
 
   def set_postion(self, pos):
     self.position = pos
+
+  def update_age(self):
+    self.age += 1
+  
+  def get_death_of_age(self):
+    return self.age >= prey_vars['prey_max_age']
 
   def check_move(self, pos):
     x,y = pos

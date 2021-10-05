@@ -11,6 +11,7 @@ class Hunter:
     self.critical_distance = hunter_vars['hunter_vision_range']
     self.stalking_distance = hunter_vars['hunter_stalking_range']
     self.board_size = board_size
+    self.age = 0
 
     # Parameters to determine when hunter feels the need to hunt
     self.hunger_threshold = hunter_vars['hunter_hunger_threshold']
@@ -31,6 +32,15 @@ class Hunter:
 
   def get_id(self):
     return self.id
+
+  def update_age(self):
+    self.age += 1
+
+  def get_death_of_age(self):
+    return self.age >= hunter_vars['hunter_max_age']
+
+  def get_age(self):
+    return age
 
   def get_ready(self):
     return self.ready
@@ -212,7 +222,7 @@ class Hunter:
       self.satedness -= (self.energy_reduc * self.consumption) 
     else:
       self.satedness -= self.consumption
-    
+
     return (x_self, y_self)
 
   def feed(self, hunters):

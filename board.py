@@ -70,6 +70,33 @@ class Board:
         copied_hunters.append(hunter)
     self.hunters = copied_hunters
 
+    # Check which agents die of old age
+    copied_hunters = []
+    for hunter in self.hunters:
+      if hunter.get_death_of_age():
+        # hunter dies
+        # print("hunter dies to age")
+        x,y = hunter.get_position()
+        self.positions[x][y] = 0
+      else:
+        hunter.update_age()        
+        copied_hunters.append(hunter)
+    self.hunters = copied_hunters
+
+    copied_prey = []
+    for prey in self.prey:
+      if prey.get_death_of_age():
+        # prey dies
+        # print("prey dies to age")
+        x,y = prey.get_position()
+        self.positions[x][y] = 0
+      else:
+        prey.update_age()        
+        copied_prey.append(prey)
+    self.prey = copied_prey
+
+
+
     # Hunters have small chance to reproduce if they aren't hungry
     for hunters in self.hunters:
       if hunter.check_reproduce():
