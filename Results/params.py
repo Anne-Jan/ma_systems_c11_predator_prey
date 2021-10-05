@@ -17,12 +17,14 @@ hunter_vars = {
 'hunter_hunger_threshold': 80,          # While above this threshold, hunters do not hunt and have chance to reproduce
 'hunter_energy_consumption': 3,         # Amount of energy consumed when moving
 'hunter_energy_reduc': 0.25,            # Lower rate of energy consumption when waiting for helping hunters (gets multiplied by basic energy consumption)
-'hunter_reproduce_rate': 0.1            # Chance of hunter reproducing (when not hunting) (number between 0 and 1)
+'hunter_reproduce_rate': 0.1,           # Chance of hunter reproducing (when not hunting) (number between 0 and 1)
+'hunter_max_age': 250                   # Age at which hunters die
 }
 
 # Prey variables
 prey_vars = {
 'prey_vision_range': 5,                 # Detect and flee from hunters within this range
-'prey_reproduce_rate': 0.0025,          # Chance of prey reproducing (when they see no hunters) (number between 0 and 1)
-'prey_move_handicap': 0.15              # Chance of prey skipping move to give hunter small advantage(number between 0 and 1)
+'prey_reproduce_rate': 0.01,          # Chance of prey reproducing (when they see no hunters) (number between 0 and 1)
+'prey_move_handicap': 0.15,             # Chance of prey skipping move to give hunter small advantage(number between 0 and 1)
+'prey_max_age': 100                     # Age at which prey die
 }

@@ -26,7 +26,7 @@ if __name__ == "__main__":
   averages = []
   for i in range (board_vars['max_iterations']):
     averages.append([0,0])
-  print(averages)
+
   # First, add up all results
   for run in range(num_runs):
     with open("Results/Run" + str(run) + ".csv") as read_obj:

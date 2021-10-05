@@ -24,7 +24,7 @@ hunter_vars = {
 # Prey variables
 prey_vars = {
 'prey_vision_range': 5,                 # Detect and flee from hunters within this range
-'prey_reproduce_rate': 0.005,          # Chance of prey reproducing (when they see no hunters) (number between 0 and 1)
+'prey_reproduce_rate': 0.01,          # Chance of prey reproducing (when they see no hunters) (number between 0 and 1)
 'prey_move_handicap': 0.15,             # Chance of prey skipping move to give hunter small advantage(number between 0 and 1)
 'prey_max_age': 100                     # Age at which prey die
 }
