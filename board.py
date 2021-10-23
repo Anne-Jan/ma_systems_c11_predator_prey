@@ -30,7 +30,7 @@ class Board:
     # self.prey_vars = prey_vars
     self.prey = []
     for i in range(board_vars['num_prey']):
-      self.prey.append(Prey(self.board_size))#, prey_vars))
+      self.prey.append(Prey(self.board_size, born = False))#, prey_vars))
     # self.prey.append(Prey((4,4)))
     # self.prey.append(Prey((24,0)))
 
@@ -129,7 +129,7 @@ class Board:
     # Check if prey reproduce
     for prey in self.prey:
       if prey.check_reproduce(self.hunters):
-        self.prey.append(Prey(self.board_size))
+        self.prey.append(Prey(self.board_size, born = True))
 
     # Determine the new x,y values for the prey, store them and visually update the board
     new_prey_pos = []

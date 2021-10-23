@@ -2,13 +2,16 @@ from random import *
 from params import prey_vars
 
 class Prey():
-  def __init__(self, board_size):
+  def __init__(self, board_size, born = False):
     self.position = (randint(0, board_size-1), randint(0, board_size-1))
     self.critical_distance = prey_vars['prey_vision_range']
     self.board_size = board_size
     self.move_handicap = prey_vars['prey_move_handicap']
     self.reproduce_chance = prey_vars['prey_reproduce_rate']
-    self.age = 0
+    if born == True:
+      self.age = 0
+    else:
+      self.age = randint(0, prey_vars['prey_born_max_age'])
 
   def get_position(self):
    return self.position
