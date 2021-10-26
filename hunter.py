@@ -5,13 +5,16 @@ from params import hunter_vars
 class Hunter:
   id_iterator = itertools.count()
 
-  def __init__(self, board_size):
+  def __init__(self, board_size, born):
     self.position = (randint(0, board_size-1), randint(0, board_size-1))
     # Range in wich hunters detect prey
     self.critical_distance = hunter_vars['hunter_vision_range']
     self.stalking_distance = hunter_vars['hunter_stalking_range']
     self.board_size = board_size
-    self.age = 0
+    if born == True:
+      self.age = 0
+    else:
+      self.age = randint(0, hunter_vars['hunter_born_max_age'])
 
     # Parameters to determine when hunter feels the need to hunt
     self.hunger_threshold = hunter_vars['hunter_hunger_threshold']

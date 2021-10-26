@@ -19,6 +19,7 @@ hunter_vars = {
 'hunter_energy_reduc': 0.25,            # Lower rate of energy consumption when waiting for helping hunters (gets multiplied by basic energy consumption)
 'hunter_reproduce_rate': 0.1,           # Chance of hunter reproducing (when not hunting) (number between 0 and 1)
 'hunter_max_age': 250,                  # Age at which hunters die
+'hunter_born_max_age': 100,             # Hunters at start of simulation spawn with age between 0 and 'prey_born_max_age'
 'hunter_coop_energy': 70                # Number to which satedness is set after succesful cooperative hunt (between 100 and 0)
 }
 

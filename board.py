@@ -21,7 +21,7 @@ class Board:
     # self.hunter_vars = hunter_vars
     self.hunters = []
     for i in range(board_vars['num_hunters']):
-      self.hunters.append(Hunter(self.board_size))#, self.hunter_vars))
+      self.hunters.append(Hunter(self.board_size, born = False))#, self.hunter_vars))
     # self.hunters.append(Hunter((23,21)))
     # self.hunters.append(Hunter((21,23)))
     # self.hunters.append(Hunter((8,8)))
@@ -100,7 +100,7 @@ class Board:
     # Hunters have small chance to reproduce if they aren't hungry
     for hunters in self.hunters:
       if hunter.check_reproduce():
-        self.hunters.append(Hunter(self.board_size))
+        self.hunters.append(Hunter(self.board_size, born = True))
 
     # Hungry hunters scan area for prey
     for hunter in self.hunters:

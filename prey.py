@@ -2,7 +2,7 @@ from random import *
 from params import prey_vars
 
 class Prey():
-  def __init__(self, board_size, born = False):
+  def __init__(self, board_size, born):
     self.position = (randint(0, board_size-1), randint(0, board_size-1))
     self.critical_distance = prey_vars['prey_vision_range']
     self.board_size = board_size
