@@ -51,7 +51,7 @@ class Board:
   def print_board(self):
     # Print the list in this order to get a 25x25 grid with [0][0] being bottom left and [24][24] top right
     # Use the symbols when visualizing the board
-    symbols = [' ', 'H', 'p']
+    symbols = ['| |', '|H|', '|p|']
     for j in range(len(self.positions)-1, -1,-1):
       for i in range(len(self.positions)):
         print(symbols[self.positions[i][j]], end='')
