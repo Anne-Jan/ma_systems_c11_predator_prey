@@ -3,9 +3,9 @@ num_runs = 5                           # Number of runs the program will do in a
 
 # Board variables
 board_vars = {
-'board_size': 25,                      # Size of board
-'num_hunters': 2,                      # Starting number of hunters
-'num_prey': 10,                        # Starting number of prey
+'board_size': 100,                      # Size of board
+'num_hunters': 20,                      # Starting number of hunters
+'num_prey': 100,                        # Starting number of prey
 'max_iterations': 5000                  # Maximal number of iterations before ending simulation
 }
 

@@ -51,7 +51,7 @@ class Board:
   def print_board(self):
     # Print the list in this order to get a 25x25 grid with [0][0] being bottom left and [24][24] top right
     # Use the symbols when visualizing the board
-    symbols = ['| |', '|H|', '|p|']
+    symbols = [' | | ', ' |H| ', ' |p| ']
     for j in range(len(self.positions)-1, -1,-1):
       for i in range(len(self.positions)):
         print(symbols[self.positions[i][j]], end='')
@@ -96,6 +96,14 @@ class Board:
     self.prey = copied_prey
 
 
+    ###Check if prey has died of old age, if so end the simulation
+    if self.iteration == self.max_iterations or len(self.hunters) == 0 or len(self.prey) == 0:
+      # Write data to file
+      self.data.append([len(self.hunters), len(self.prey)])
+      with open("Results/Run" + str(self.run_num) + ".csv", "w+") as my_csv:
+        cs_writer = csv.writer(my_csv, delimiter=',')
+        cs_writer.writerows(self.data)
+      return False
 
     # Hunters have small chance to reproduce if they aren't hungry
     for hunters in self.hunters:
@@ -181,37 +189,3 @@ class Board:
     for eaten_p in eaten_prey:
       self.prey.remove(eaten_p)
 
-
-
-
-
-    # # Determine the new x,y values for the hunters, store them and visually update the board
-    # new_hunter_pos = []
-    # for hunter in self.hunters:
-    #   # Scan, search for prey
-    #   hunter.search()
-
-    #   # collect all goals
-    #   goals = []
-    #   for hunter in self.hunters:
-    #     goals.append(hunter.get_goal())
-      
-    #   # Every hunter is now aware of all the prey located by the pack of hunters, and chooses closest target
-    #   hunter.communicate(goals, self.hunters)
-
-
-    #   # move
-
-
-
-    #   # Change the old locations to empty
-    #   x,y = hunter.get_position()
-    #   self.positions[x][y] = 0
-    #   #Move and get the new locations, hunter moves twice as it is faster
-    #   hunter.set_postion(hunter.move(self.prey, new_hunter_pos))
-    #   hunter.set_postion(hunter.move(self.prey, new_hunter_pos))
-    #   new_hunter_pos.append(hunter.get_position())
-    #   # print("hoi")
-    #   # print(new_hunter_pos[-1])
-    #   x,y = new_hunter_pos[-1]
-    #   self.positions[x][y] = 1
